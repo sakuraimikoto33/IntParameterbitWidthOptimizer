@@ -1,6 +1,6 @@
 {
   "name": "okitsu.net.ndintparameterbitwidthoptimizer",
-  "displayName": "IntParameterBitWidthOptimizer",
+  "displayName": "IntParameterbitWidthOptimizer",
   "version": "1.0.0",
   "unity": "2022.3",
   "description": "Automatically optimizes the bit width of Int parameters.",
@@ -13,5 +13,5 @@
     "name": "sakuraimikoto33"
   },
   "license": "MIT",
-  "licensesUrl": "https://github.com/sakuraimikoto33/IntParameterBitWidthOptimizer/blob/main/LICENSE"
+  "licensesUrl": "https://github.com/sakuraimikoto33/IntParameterbitWidthOptimizer/blob/main/LICENSE"
 }
