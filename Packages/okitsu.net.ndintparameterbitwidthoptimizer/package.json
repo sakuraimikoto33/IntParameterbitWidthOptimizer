@@ -1,0 +1,17 @@
+{
+  "name": "okitsu.net.ndintparameterbitwidthoptimizer",
+  "displayName": "IntParameterBitWidthOptimizer",
+  "version": "1.0.0",
+  "unity": "2022.3",
+  "description": "Automatically optimizes the bit width of Int parameters.",
+  "vrchatVersion": "2022.1.1",
+  "vpmDependencies" : {
+    "com.vrchat.avatars" : ">=3.10.6",
+    "nadena.dev.ndmf" : ">=1.15.0-beta.5"
+  },
+  "author": {
+    "name": "sakuraimikoto33"
+  },
+  "license": "MIT",
+  "licensesUrl": "https://github.com/sakuraimikoto33/IntParameterBitWidthOptimizer/blob/main/LICENSE"
+}
