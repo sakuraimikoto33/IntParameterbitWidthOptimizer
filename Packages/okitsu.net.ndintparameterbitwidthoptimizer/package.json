@@ -1,7 +1,7 @@
 {
   "name": "okitsu.net.ndintparameterbitwidthoptimizer",
   "displayName": "IntParameterbitWidthOptimizer",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "unity": "2022.3",
   "description": "Automatically optimizes the bit width of Int parameters.",
   "vrchatVersion": "2022.1.1",
