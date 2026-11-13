@@ -113,7 +113,24 @@ namespace okitsu.net.ndparamcompressor.Editor
 
             try
             {
-                Optimize(context);
+                var excludedParameters = new HashSet<string>(StringComparer.Ordinal);
+                foreach (var marker in markers)
+                {
+                    if (marker?.excludedParameters == null)
+                    {
+                        continue;
+                    }
+
+                    foreach (var parameterName in marker.excludedParameters)
+                    {
+                        if (!string.IsNullOrWhiteSpace(parameterName))
+                        {
+                            excludedParameters.Add(parameterName.Trim());
+                        }
+                    }
+                }
+
+                Optimize(context, excludedParameters);
             }
             catch (Exception exception)
             {
@@ -132,7 +149,7 @@ namespace okitsu.net.ndparamcompressor.Editor
             }
         }
 
-        private static void Optimize(BuildContext context)
+        private static void Optimize(BuildContext context, HashSet<string> excludedParameters)
         {
             var descriptor = context.AvatarRootObject.GetComponent<VRCAvatarDescriptor>();
             if (descriptor == null || descriptor.expressionParameters == null)
@@ -141,7 +158,7 @@ namespace okitsu.net.ndparamcompressor.Editor
                 return;
             }
 
-            var candidates = CreateCandidates(descriptor.expressionParameters);
+            var candidates = CreateCandidates(descriptor.expressionParameters, excludedParameters);
             if (!candidates.Values.Any(candidate => candidate.CanOptimize))
             {
                 Debug.Log($"{LogPrefix} No 8-bit Int expression parameters found");
@@ -282,7 +299,9 @@ namespace okitsu.net.ndparamcompressor.Editor
             }
         }
 
-        private static Dictionary<string, Candidate> CreateCandidates(VRCExpressionParameters parameters)
+        private static Dictionary<string, Candidate> CreateCandidates(
+            VRCExpressionParameters parameters,
+            HashSet<string> excludedParameters)
         {
             var candidates = new Dictionary<string, Candidate>(StringComparer.Ordinal);
             if (parameters.parameters == null)
@@ -298,10 +317,13 @@ namespace okitsu.net.ndparamcompressor.Editor
                     continue;
                 }
 
-                var canOptimize = parameter.networkSynced && parameter.bitWidth == 8;
+                var manuallyExcluded = excludedParameters.Contains(parameter.name);
+                var canOptimize = parameter.networkSynced && parameter.bitWidth == 8 && !manuallyExcluded;
                 if (!canOptimize)
                 {
-                    var reason = parameter.networkSynced
+                    var reason = manuallyExcluded
+                        ? "manually excluded"
+                        : parameter.networkSynced
                         ? $"Expression parameter has an explicit {parameter.bitWidth}-bit width"
                         : "Expression parameter is local-only";
                     Debug.Log($"{LogPrefix} {parameter.name} tracked as a Copy source only: {reason}");
